@@ -45,7 +45,7 @@
 			</tr>
 			<tr class="buttons">
 				<td colspan="2">
-					<button formaction="confirm.html" formmethod="post" name="action" value="update">確認画面へ</button>
+					<button formaction="confirm.php" formmethod="post" name="action" value="update">確認画面へ</button>
 				</td>
 			</tr>
 		</table>

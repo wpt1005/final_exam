@@ -12,7 +12,7 @@
 <main id="complete">
 	<h2>商品の完了</h2>
 	<p>処理を完了しました。</p>
-	<p><a href="top.html">トップページに戻る</a></p>
+	<p><a href="top.php">トップページに戻る</a></p>
 </main>
 <footer>
 	<div id="copyright">&copy; 2021 The Applied Course of Web System Development.</div>

@@ -36,7 +36,7 @@
 		<tr class="buttons">
 			<td colspan="2">
 				<form name="inputs">
-					<button formaction="complete.html" formmethod="post" name="action" value="execute">実行する</button>
+					<button formaction="complete.php" formmethod="post" name="action" value="execute">実行する</button>
 				</form>
 			</td>
 		</tr>
