@@ -6,7 +6,7 @@ require_once "./common/Product.php";
 // リクエストパラメータを取得
 $product = null;
 isset($_REQUEST["action"]) ? $action = $_REQUEST["action"] : $action = "";
-if ($action === "entry") {
+if ($action === "entry" or $action === "update") {
 	isset($_REQUEST["id"]) ? $id = $_REQUEST["id"] : $id = 0;
 	isset($_REQUEST["name"]) ? $name = $_REQUEST["name"] : $name = "";
 	isset($_REQUEST["price"]) ? $price = $_REQUEST["price"] : $price = 0;

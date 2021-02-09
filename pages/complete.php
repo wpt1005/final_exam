@@ -13,17 +13,21 @@ $product = $_SESSION["product"];
 // データベース接続オブジェクトを取得
 $pdo = connectDB();
 try {
-	if ($action === "entry") {
-		// SQLを設定
-		$sql = "insert into product (name, price, category, detail) values (:name, :price, :category, :detail)";
-		// SQL実行オブジェクトを取得
-		$pstmt = $pdo->prepare($sql);
-		// プレースホルダに設定するパラメータの連想配列を設定
+	if ($action === "entry" or $action === "update") {
+		// SQLとプレースホルダに設定するパラメータの連想配列を設定
 		$params = [];
+		if ($action === "entry") {
+			$sql = "insert into product (name, price, category, detail) values (:name, :price, :category, :detail)";
+		} else {
+			$sql = "update product set name = :name, price = :price, category = :category, detail = :detail where id = :id";
+			$params["id"] = $product->getId();
+		}
 		$params[":name"] = $product->getName();
 		$params[":price"] = $product->getPrice();
 		$params[":category"] = $product->getCategory();
 		$params[":detail"] = $product->getDetail();
+		// SQL実行オブジェクトを取得
+		$pstmt = $pdo->prepare($sql);
 		// SQLを実行
 		$pstmt->execute($params);
 	}
