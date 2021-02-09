@@ -9,6 +9,9 @@ isset($_REQUEST["action"]) ? $action = $_REQUEST["action"] : $action = "";
 // セッションからデータを取得
 session_start();
 $product = $_SESSION["product"];
+// セッションを削除
+unset($_SESSION["product"]);
+unset($_SESSION);
 
 // データベース接続オブジェクトを取得
 $pdo = connectDB();
