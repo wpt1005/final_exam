@@ -30,6 +30,15 @@ try {
 		$pstmt = $pdo->prepare($sql);
 		// SQLを実行
 		$pstmt->execute($params);
+	} elseif ($action === "delete") {
+		// 実行するSQLを設定
+		$sql = "delete from product where id = ?";
+		// SQL実行オブジェクトを取得
+		$pstmt = $pdo->prepare($sql);
+		// プレースホルダを設定
+		$pstmt->bindValue(1, $product->getId());
+		// SQLを実行
+		$pstmt->execute();
 	}
 } catch (PDOException $e) {
 	die($e->getMessage());

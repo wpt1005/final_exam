@@ -1,19 +1,52 @@
 <?php
 // 外部ファイルの読み込み
+require_once "./common/db.php";
 require_once "./common/Product.php";
 ?>
 <?php
 // リクエストパラメータを取得
 $product = null;
 isset($_REQUEST["action"]) ? $action = $_REQUEST["action"] : $action = "";
+isset($_REQUEST["id"]) ? $id = $_REQUEST["id"] : $id = 0;
 if ($action === "entry" or $action === "update") {
-	isset($_REQUEST["id"]) ? $id = $_REQUEST["id"] : $id = 0;
 	isset($_REQUEST["name"]) ? $name = $_REQUEST["name"] : $name = "";
 	isset($_REQUEST["price"]) ? $price = $_REQUEST["price"] : $price = 0;
 	isset($_REQUEST["category"]) ? $category = $_REQUEST["category"] : $category = "";
 	isset($_REQUEST["detail"]) ? $detail = $_REQUEST["detail"] : $detail = "";
 	// 商品クラスのインスタンスを生成
 	$product = new Product($id, $name, $price, $category, $detail);
+} elseif ($action === "delete") {
+	/* 指定されたIDの商品の検索 */
+	$pdo = null;
+	$pstmt = null;
+	try {
+		// データベース接続オブエジェクトの取得
+		$pdo = connectDB();
+		// 実行するSQLの設定
+		$sql = "select * from product where id = ?";
+		// SQL実行オブジェクトを取得
+		$pstmt = $pdo->prepare($sql);
+		// プレースホルダを設定
+		$pstmt->bindValue(1, $id);
+		// SQLの実行と結果セットの取得
+		$pstmt->execute();
+		$records = $pstmt->fetchAll(PDO::FETCH_ASSOC);
+		// 結果セットから商品クラスのインスタンスを取得
+		$product = null;
+		if (count($records) > 0) {
+			$id = $records[0]["id"];
+			$name = $records[0]["name"];
+			$price = $records[0]["price"];
+			$category = $records[0]["category"];
+			$detail = $records[0]["detail"];
+			$product = new Product($id, $name, $price, $category, $detail);
+		}
+	} catch (PDOException $e) {
+		die($e->getMessage());
+	} finally {
+		unset($pstmt);
+		unset($pdo);
+	}	
 }
 // セッションに商品を格納
 session_start();
