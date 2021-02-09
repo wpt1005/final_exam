@@ -1,3 +1,39 @@
+<?php
+// 外部ファイルの読み込み
+require_once "./common/db.php";
+require_once "./common/Product.php";
+?>
+<?php
+// リクエストパラメータを取得
+isset($_REQUEST["action"]) ? $action = $_REQUEST["action"] : $action = "";
+// セッションからデータを取得
+session_start();
+$product = $_SESSION["product"];
+
+// データベース接続オブジェクトを取得
+$pdo = connectDB();
+try {
+	if ($action === "entry") {
+		// SQLを設定
+		$sql = "insert into product (name, price, category, detail) values (:name, :price, :category, :detail)";
+		// SQL実行オブジェクトを取得
+		$pstmt = $pdo->prepare($sql);
+		// プレースホルダに設定するパラメータの連想配列を設定
+		$params = [];
+		$params[":name"] = $product->getName();
+		$params[":price"] = $product->getPrice();
+		$params[":category"] = $product->getCategory();
+		$params[":detail"] = $product->getDetail();
+		// SQLを実行
+		$pstmt->execute($params);
+	}
+} catch (PDOException $e) {
+	die($e->getMessage());
+} finally {
+	unset($pdo);
+}
+
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
